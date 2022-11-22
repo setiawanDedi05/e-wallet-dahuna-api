@@ -1,0 +1,250 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "e-wallet dahuna api",
+    "description": "This containt minimum API for e wallet dahuna",
+    "contact": {
+      "name": "e wallet dahuna api",
+      "url": "https://www.dahuna.com/",
+      "email": "dssetiawan05@gmail.com"
+    },
+    "version": "master"
+  },
+  "host": "localhost:8888",
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/auth/login": {
+      "post": {
+        "summary": "post the request login for get token",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "the user to get authentication",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "tags": [
+          "Authentication"
+        ],
+        "operationId": "login",
+        "responses": {
+          "200": {
+            "description": "Authentication Success",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ErrorBadRequest"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorUnexpected"
+          }
+        }
+      }
+    },
+    "/v1/auth/register": {
+      "post": {
+        "summary": "post the request register for register account",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "the user to register new account",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "tags": [
+          "Registration"
+        ],
+        "operationId": "registration",
+        "responses": {
+          "200": {
+            "description": "Registration Success",
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          },
+          "400": {
+            "$ref": "#/responses/ErrorBadRequest"
+          },
+          "default": {
+            "$ref": "#/responses/ErrorUnexpected"
+          }
+        }
+      }
+    }
+  },
+  "parameters": {
+    "APIVersion": {
+      "name": "X-Dahuna-e-wallet-Version",
+      "in": "header",
+      "description": "version number of the Dahuna e-wallet API that the Platform will use",
+      "required": true,
+      "type": "string"
+    },
+    "OriginatingIdentity": {
+      "name": "X-Dahuna-e-wallet-API-Originating-Identity",
+      "in": "header",
+      "description": "identity of the user that initiated the request from the Platform",
+      "type": "string"
+    },
+    "RequestIdentity": {
+      "name": "X-Dahuna-e-wallet-API-Request-Identity",
+      "in": "header",
+      "description": "idenity of the request from the Platform",
+      "type": "string"
+    },
+    "accepts_incomplete": {
+      "name": "accepts_incomplete",
+      "in": "query",
+      "description": "asynchronous operations supported",
+      "type": "boolean"
+    },
+    "service_id": {
+      "name": "service_id",
+      "in": "query",
+      "description": "id of the service associated with the instance being deleted",
+      "required": true,
+      "type": "string"
+    },
+    "plan_id": {
+      "name": "plan_id",
+      "in": "query",
+      "description": "id of the plan associated with the instance being deleted",
+      "required": true,
+      "type": "string"
+    }
+  },
+  "responses": {
+    "ErrorBadRequest": {
+      "description": "Bad Request",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorUnauthorized": {
+      "description": "Unauthorized",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorNotFound": {
+      "description": "Not Found",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorConflict": {
+      "description": "Conflict",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorGone": {
+      "description": "Gone",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorPreconditionFailed": {
+      "description": "Precondition Failed",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorUnprocessableEntity": {
+      "description": "Unprocessable Entity",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    },
+    "ErrorUnexpected": {
+      "description": "Unexpected",
+      "schema": {
+        "$ref": "#/definitions/Error"
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "required": [
+        "username",
+        "password"
+      ],
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "jwt": {
+          "type": "string"
+        }
+      }
+    },
+    "DataPlan": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "OperatorCardId": {
+          "type": "integer"
+        }
+      }
+    },
+    "Entry": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "integer"
+        },
+        "content": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "integer"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic"
+    }
+  },
+  "security": [
+    {
+      "basicAuth": []
+    }
+  ],
+  "externalDocs": {
+    "description": "The offical Open Service Broker API specification",
+    "url": "https://github.com/openservicebrokerapi/servicebroker/"
+  }
+}
